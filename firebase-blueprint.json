@@ -1,0 +1,43 @@
+{
+  "entities": {
+    "Ringtone": {
+      "title": "Ringtone",
+      "description": "Metadata for a ringtone file stored in Google Drive.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "artist": { "type": "string" },
+        "year": { "type": "string" },
+        "month": { "type": "string" },
+        "driveId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "published", "rejected"] },
+        "downloadCount": { "type": "integer" },
+        "uploadedBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "artist", "driveId", "status", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "User account information and roles.",
+      "type": "object",
+      "properties": {
+        "displayName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["user", "admin"] }
+      },
+      "required": ["email", "role"]
+    }
+  },
+  "firestore": {
+    "/ringtones/{ringtoneId}": {
+      "schema": "Ringtone",
+      "description": "Collection of all ringtones."
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles and permissions."
+    }
+  }
+}
