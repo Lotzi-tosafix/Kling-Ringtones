@@ -12,8 +12,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   const [playingId, setPlayingId] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const play = (driveId: string) => {
-    if (playingId === driveId) {
+  const play = (playableId: string) => {
+    if (playingId === playableId) {
       pause();
       return;
     }
@@ -22,8 +22,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       audioRef.current.pause();
     }
 
-    setPlayingId(driveId);
-    const streamUrl = `https://drive.google.com/uc?export=download&id=${driveId}`;
+    setPlayingId(playableId);
+    
+    // Check if it's a full URL (Firebase Storage) or a Drive ID
+    const streamUrl = playableId.startsWith('http') 
+        ? playableId 
+        : `https://drive.google.com/uc?export=download&id=${playableId}`;
     
     if (!audioRef.current) {
       audioRef.current = new Audio(streamUrl);

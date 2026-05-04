@@ -6,14 +6,20 @@ export interface Ringtone {
   id: string;
   title: string;
   artist: string;
-  year: string;
-  month: string;
-  driveId: string;
+  year?: string;
+  month?: string;
+  category?: string;
+  driveId?: string; // from admin
+  storageUrl?: string; // from user upload
+  originalFileName?: string;
   status: RingtoneStatus;
   downloadCount: number;
-  uploadedBy: string;
+  playCount?: number;
+  uploadedBy?: string;
+  uploaderId?: string;
+  uploaderName?: string;
   createdAt: Timestamp;
-  updatedAt: Timestamp;
+  updatedAt?: Timestamp;
 }
 
 export interface UserProfile {
