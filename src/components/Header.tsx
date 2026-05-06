@@ -11,6 +11,12 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
+  const navigate = (path: string) => {
+    const event = new CustomEvent('navigate', { detail: path });
+    window.dispatchEvent(event);
+    setIsMenuOpen(false);
+  };
+
   useEffect(() => {
     const savedMode = localStorage.getItem('kling-view-mode') as 'grid' | 'list';
     if (savedMode) setViewMode(savedMode);
@@ -48,20 +54,23 @@ export default function Header() {
           >
             <Menu size={24} />
           </button>
-          <a href="/" className="hover:opacity-80 transition-opacity">
+          <div 
+            onClick={() => navigate('/')} 
+            className="hover:opacity-80 transition-opacity cursor-pointer"
+          >
             <Logo className="text-3xl" />
-          </a>
+          </div>
         </div>
 
         <div className="hidden lg:flex items-center gap-8">
           {navItems.map((item) => (
-            <a 
+            <button 
               key={item.href} 
-              href={item.href}
-              className="text-sm font-medium text-slate-600 hover:text-brand-pink transition-colors flex items-center gap-1"
+              onClick={() => navigate(item.href)}
+              className="text-sm font-medium text-slate-600 hover:text-brand-pink transition-colors flex items-center gap-1 cursor-pointer"
             >
               {item.label}
-            </a>
+            </button>
           ))}
         </div>
 
@@ -98,7 +107,12 @@ export default function Header() {
           {user ? (
             <div className="flex items-center gap-3">
               {profile?.role === 'admin' && (
-                <a href="/admin" className="hidden sm:block text-[10px] font-bold text-brand-pink bg-brand-pink/10 px-2 py-1 rounded">ADMIN</a>
+                <button 
+                  onClick={() => navigate('/admin')} 
+                  className="hidden sm:block text-[10px] font-bold text-brand-pink bg-brand-pink/10 px-2 py-1 rounded cursor-pointer"
+                >
+                  ADMIN
+                </button>
               )}
               <button onClick={logout} className="p-2 hover:bg-slate-100 rounded-full text-slate-500 transition-colors cursor-pointer" title="התנתק">
                 <LogOut size={20} />
@@ -142,13 +156,13 @@ export default function Header() {
               </div>
               <nav className="flex flex-col gap-4">
                 {navItems.map((item) => (
-                  <a 
+                  <button 
                     key={item.href} 
-                    href={item.href}
-                    className="text-lg font-medium text-slate-700 hover:text-brand-pink flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors"
+                    onClick={() => navigate(item.href)}
+                    className="text-lg font-medium text-slate-700 hover:text-brand-pink flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer text-right w-full"
                   >
                     {item.label}
-                  </a>
+                  </button>
                 ))}
               </nav>
             </motion.div>
